@@ -1,0 +1,31 @@
+{
+  "name": "olioehr.recipemanager",
+  "version": "1.0.0",
+  "description": "REST-API for managing cooking recipes.",
+  "main": "app/index.js",
+  "private": true,
+  "scripts": {
+    "test": "NODE_ENV=test mocha",
+    "develop": "LOG_LEVEL=debug nodemon",
+    "debug": "LOG_LEVEL=debug node debug",
+    "production": "LOG_LEVEL=info NODE_ENV=production node"
+  },
+  "author": "Elio Schmutz",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "config": "^1.26.1",
+    "express": "^4.15.3",
+    "helmet": "^3.6.1",
+    "mongoose": "^4.10.5",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.8.0",
+    "mocha": "^3.4.2",
+    "mongodb-runner": "^3.5.0"
+  }
+}
