@@ -1,14 +1,35 @@
 let mongoose = require('mongoose');
-let handleError = require('../helpers/handle-error');
 
 let schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: false,
+  },
+  ingredients: {
+    type: Array,
+    required: false,
+  },
+  steps: [
+    {
+      text: String,
+      timer: Number,
+    },
+  ],
+  lastTimeCoocked: {
+    type: Date,
+    required: false,
+  },
   creationDate: {
     type: Date,
     default: Date.now,
+  },
+  owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
   },
   modificationDate: {
     type: Date,
