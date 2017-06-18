@@ -1,6 +1,6 @@
 let config = exports;
 
 config.db = {
-  url: '',
+  url: 'mongodb://localhost:27017/',
 };
 

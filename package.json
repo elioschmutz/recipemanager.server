@@ -5,7 +5,9 @@
   "main": "app/index.js",
   "private": true,
   "scripts": {
+    "pretest": "mongodb-runner start",
     "test": "NODE_ENV=test mocha",
+    "posttest": "mongodb-runner stop",
     "develop": "LOG_LEVEL=debug nodemon",
     "debug": "LOG_LEVEL=debug node debug",
     "production": "LOG_LEVEL=info NODE_ENV=production node"
