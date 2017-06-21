@@ -1,0 +1,75 @@
+let Router = require('express').Router;
+let User = require('../models/user');
+let handleError = require('../helpers/handle-error');
+
+router = new Router();
+
+/*  "/"
+ *    GET: find all users. Filter the results by adding a query-parameter.
+ *    POST: creates new user
+ */
+router.get('/', function(req, res) {
+  User.find().then(
+    (users) => {
+      return res.status(200).json(users);
+    },
+    (err) => {
+      return handleError(res, err.message, 'Failed to get users.');
+    });
+});
+
+router.post('/', function(req, res) {
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName});
+
+  user.save()
+    .then((user) => {
+        res.status(201).json(user);
+      }, (reason) => {
+        if (reason.code == 11000) {
+          handleError(res, reason, 'The user with this username already exists.', 409);
+        } else {
+          handleError(res, reason, 'Something went wrong while creating the user.', 400);
+        }
+
+      }
+    );
+});
+
+/*  "/:id"
+ *    GET: find a user with the given id.
+ *    DELETE: removes a user with the given id.
+ */
+router.get('/:id', function(req, res) {
+  let id = req.params.id;
+  User.findById(id)
+    .then(
+      (user) => {
+        res.send(user);
+      },
+      (error) => {
+        handleError(res, error.message, 'Failed to get user with id ' + id);
+      }
+    );
+});
+
+router.delete('/:id', function(req, res) {
+  User.findByIdAndRemove(req.params.id)
+    .then(
+      (recipe) => {
+        if (recipe) {
+          res.status(204).json();
+        } else {
+          res.status(404).json();
+        }
+      },
+      (reason) => {
+        handleError(res, reason, 'Error', 400);
+      }
+    );
+});
+
+module.exports = router;

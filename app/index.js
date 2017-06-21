@@ -1,10 +1,12 @@
 let App = require('./app');
-let Database = require('./databases/mongodb');
+let database = require('./databases/mongodb');
+let authentication = require('./authentication');
 let config = require('config');
 let Server = require('./server');
 
-let app = new App();
-let database = new Database().connect(config.db.url);
-database.then(() => {
+let db = database.connect(config.db.url);
+db.then(() => {
+    let app = new App();
+    app.bootstrap();
     new Server().run(app.get(), config.server.port);
 });
