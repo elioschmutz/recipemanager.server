@@ -1,14 +1,15 @@
 let config = require('config');
-let env = require('./env');
+let db = require('../app/databases/mongodb');
+let app = require('../app/app');
 let chaiHttp = require('chai-http');
 let chai = require('chai');
-var chaiAsPromised = require("chai-as-promised");
+let chaiAsPromised = require("chai-as-promised");
 
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
 
 before(function() {
-  return env.db.connect(config.db.url).then(() => {
-    return env.app.bootstrap();
+  return db.connect(config.db.url).then(() => {
+    return app.bootstrap();
     });
 });

@@ -1,5 +1,5 @@
 let User = require('../../app/models/user');
-let env = require('../env');
+let app = require('../../app/app');
 let chai = require('chai');
 let assert = chai.assert;
 
@@ -15,7 +15,7 @@ describe('User', () => {
           users.push(new User({username: `user.${i}@example.com`, password: '1234'}).save());
         }
         return Promise.all(users).then((values) => {
-          return chai.request(env.app.get())
+          return chai.request(app.get())
             .get('/api/users')
             .then(function(res) {
               assert.lengthOf(res.body, 3);
@@ -27,7 +27,7 @@ describe('User', () => {
 
   describe('/POST api/users', () => {
     it('it should create a new user', () => {
-      return chai.request(env.app.get())
+      return chai.request(app.get())
         .post('/api/users')
         .send({username: 'max.muster@example.com', password: '1234'})
         .then(function(res) {
