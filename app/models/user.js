@@ -34,7 +34,14 @@ let schema = new mongoose.Schema({
   },
 
 });
-schema.set('toJSON', {getters: true, virtuals: false});
+
+schema.set('toJSON', {
+  getters: true,
+  virtuals: false,
+  transform: (doc, ret) => {
+    delete ret.password;
+  },
+});
 schema.pre('save', function(next) {
   let user = this;
 

@@ -39,4 +39,10 @@ describe('User Model', () => {
         return assert.becomes(user.validatePassword('xxxx'), false);
       });
     });
+
+      return new User({username: 'elio.schmutz@msn.com', password: '1234'}).save().then((user) => {
+    it('json representation does not return password', () => {
+        return assert.notProperty(user.toJSON(), 'password');
+      });
+    });
 });
