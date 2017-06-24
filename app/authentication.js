@@ -4,18 +4,18 @@ let User = require('./models/user');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    User.findOne({username: username}, function (err, user) {
+    User.findOne({username: username}, function(err, user) {
       if (err) {
         return done(err);
       }
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, {message: 'Incorrect username.'});
       }
       user.validatePassword(password).then((res) => {
         if (res) {
           return done(null, user);
         } else {
-          return done(null, false, { message: 'Incorrect password.' });
+          return done(null, false, {message: 'Incorrect password.'});
         }
       });
     });
