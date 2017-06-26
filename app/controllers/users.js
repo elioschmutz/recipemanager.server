@@ -1,6 +1,7 @@
 let Router = require('express').Router;
 let User = require('../models/user');
 let handleError = require('../helpers/handle-error');
+let permission = require('permission');
 
 router = new Router();
 
@@ -8,7 +9,7 @@ router = new Router();
  *    GET: find all users. Filter the results by adding a query-parameter.
  *    POST: creates new user
  */
-router.get('/', function(req, res) {
+router.get('/users', permission(['admin']), function(req, res) {
   User.find().then(
     (users) => {
       return res.status(200).json(users);
@@ -18,7 +19,7 @@ router.get('/', function(req, res) {
     });
 });
 
-router.post('/', function(req, res) {
+router.post('/users', permission(['admin']), function(req, res) {
   const user = new User({
     username: req.body.username,
     password: req.body.password,
@@ -34,7 +35,6 @@ router.post('/', function(req, res) {
         } else {
           handleError(res, reason, 'Something went wrong while creating the user.', 400);
         }
-
       }
     );
 });
@@ -43,7 +43,7 @@ router.post('/', function(req, res) {
  *    GET: find a user with the given id.
  *    DELETE: removes a user with the given id.
  */
-router.get('/:id', function(req, res) {
+router.get('/users/:id', permission(['admin']), function(req, res) {
   let id = req.params.id;
   User.findById(id)
     .then(
@@ -56,7 +56,7 @@ router.get('/:id', function(req, res) {
     );
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/users/:id', permission(['admin']), function(req, res) {
   User.findByIdAndRemove(req.params.id)
     .then(
       (recipe) => {
@@ -70,6 +70,25 @@ router.delete('/:id', function(req, res) {
         handleError(res, reason, 'Error', 400);
       }
     );
+});
+
+/* "/current"
+ *  GET: get the current logged in user
+ */
+router.get('/current_user', permission(), function(req, res) {
+  return res.status(200).json(req.user);
+});
+
+/* "/change_password"
+ *  UPDATE: changes the password of the current logged in user.
+ *  @param: password: string
+ */
+router.put('/current_user/change_password', permission(), function(req, res) {
+  req.user.resetPassword(req.body.password).then(() => {
+    res.status(200).json();
+  }, (error) => {
+    handleError(res, error.message, 'Failed to change password');
+  });
 });
 
 module.exports = router;

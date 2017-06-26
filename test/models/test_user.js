@@ -28,15 +28,18 @@ describe('User Model', () => {
         '1234');
     });
 
-    it('password validation with correct password returns true', () => {
+    it('password validation with correct password resolves promise', () => {
       return new User({username: 'james.bond@example.com', password: '1234'}).save().then((user) => {
-        return assert.becomes(user.validatePassword('1234'), true);
+        return user.validatePassword('1234');
       });
     });
 
-    it('password validation with invalid password returns false', () => {
+    it('password validation with invalid password rejects promise', () => {
       return new User({username: 'james.bond@example.com', password: '1234'}).save().then((user) => {
-        return assert.becomes(user.validatePassword('xxxx'), false);
+        return user.validatePassword('xxxx').then(
+          () => {
+            throw new Error();
+          }, (res) => { });
       });
     });
 

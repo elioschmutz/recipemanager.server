@@ -32,6 +32,10 @@ let schema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  role: {
+    type: String,
+    default: 'member',
+  },
 
 });
 
@@ -66,8 +70,22 @@ class User {
   }
 
   validatePassword(password) {
-    return bcrypt.compare(password, this.password);
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, this.password).then((isValid) => {
+        if (isValid) {
+          resolve();
+        } else {
+          reject('invalid password');
+        }
+      });
+    });
+
   };
+
+  resetPassword(password) {
+    this.password = password;
+    return this.save();
+  }
 }
 
 schema.loadClass(User);

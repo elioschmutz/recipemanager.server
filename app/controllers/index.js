@@ -6,7 +6,7 @@ let router = new Router();
 
 router.use('/authentication', authenticationController);
 router.use('/api/recipes', recipeController);
-router.use('/api/users', usersController);
+router.use('/api', usersController);
 
 
 module.exports = router;

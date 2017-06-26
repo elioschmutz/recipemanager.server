@@ -9,10 +9,10 @@ router = new Router();
  */
 router.post('/login',
     passport.authenticate('local'),
-    function(req, res, next) {
+    (req, res, next) => {
         res.status(200).json(req.user);
     },
-    function(err, req, res, next) {
+    (err, req, res, next) => {
         logger.error(err);
         res.status(401).json();
   });
