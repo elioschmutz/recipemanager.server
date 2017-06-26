@@ -18,6 +18,12 @@ class MongoDB {
     get() {
         return this.db;
     }
+    countSessions() {
+        return this.db.connection.db.collection('sessions').count();
+    }
+    clearAllSessions() {
+        return this.db.connection.db.collection('sessions').deleteMany({});
+    }
 }
 
 module.exports = new MongoDB();

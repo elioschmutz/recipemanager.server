@@ -1,6 +1,5 @@
 let app = require('./app');
 let database = require('./databases/mongodb');
-let authentication = require('./authentication');
 let config = require('config');
 let Server = require('./server');
 

@@ -1,5 +1,6 @@
-const winston = require('winston');
+let winston = require('winston');
+let config = require('config');
 
-winston.level = process.env.LOG_LEVEL;
+winston.level = config.general.log_level;
 
 module.exports = winston;

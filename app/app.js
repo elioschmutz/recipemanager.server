@@ -7,7 +7,7 @@ let MongoStore = require('connect-mongo')(session);
 let passport = require('passport');
 let db = require('./databases/mongodb');
 let config = require('config');
-
+let authentication = require('./authentication');
 
 /**
  * App-Class for configuring the express-framework

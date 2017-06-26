@@ -1,5 +1,9 @@
 let config = exports;
 
+config.general = {
+  log_level: 'debug',
+};
+
 config.db = {
   url: '',
 };

@@ -1,3 +1,5 @@
+let logger = require('../logger');
+
 /** Generic error handler used by all endpoints.
  *
  * @param {response} res - Response object
@@ -6,7 +8,7 @@
  * @param {int} code - The html error code
 **/
 module.exports = (res, reason, message, code) => {
-  console.log('ERROR: ' + reason);
+  logger.error(reason);
   return res.status(code || 500).json({'error': message});
 };
 
