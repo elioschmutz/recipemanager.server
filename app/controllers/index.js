@@ -5,7 +5,7 @@ let authenticationController = require('./authentication');
 let router = new Router();
 
 router.use('/authentication', authenticationController);
-router.use('/api/recipes', recipeController);
+router.use('/api', recipeController);
 router.use('/api', usersController);
 
 

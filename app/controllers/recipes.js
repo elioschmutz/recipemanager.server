@@ -1,6 +1,7 @@
 let Router = require('express').Router;
 let RecipeModel = require('../models/recipe');
 let handleError = require('../helpers/handle-error');
+let permission = require('permission');
 
 router = new Router();
 
@@ -8,7 +9,7 @@ router = new Router();
  *    GET: find all recipes. Filter the results by adding a query-parameter.
  *    POST: creates new recipe
  */
-router.get('/', function(req, res) {
+router.get('/recipes', permission(), function(req, res) {
   RecipeModel.find().then(
     (recipes) => {
       return res.status(200).json(recipes);
@@ -18,8 +19,9 @@ router.get('/', function(req, res) {
     });
 });
 
-router.post('/', function(req, res) {
-  const recipe = new RecipeModel({name: req.body.name});
+router.post('/recipes', permission(), function(req, res) {
+  const recipe = new RecipeModel(req.body);
+  recipe.creator = req.user.id;
 
   recipe.save()
     .then(
@@ -37,7 +39,7 @@ router.post('/', function(req, res) {
  *    PUT: updates a recipe with the given recipeid
  *    DELETE: removes a recipe with the given recipeid.
  */
-router.get('/:id', function(req, res) {
+router.get('/recipes/:id', function(req, res) {
   let id = req.params.id;
   RecipeModel.findById(id)
     .then(
@@ -50,7 +52,7 @@ router.get('/:id', function(req, res) {
     );
 });
 
-router.put('/:id', function(req, res) {
+router.put('/recipes/:id', function(req, res) {
   RecipeModel.findByIdAndUpdate(req.params.id,
                            {$set: res.body},
                            {new: true}, function(err, recipe) {
@@ -59,7 +61,7 @@ router.put('/:id', function(req, res) {
   });
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/recipes/:id', function(req, res) {
   RecipeModel.findByIdAndRemove(req.params.id)
     .then(
       (recipe) => {
