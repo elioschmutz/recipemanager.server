@@ -34,7 +34,7 @@ let schema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'member',
+    default: config.user.defaultRole,
   },
 
 });

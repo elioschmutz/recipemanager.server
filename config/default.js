@@ -19,3 +19,11 @@ config.authentication = {
 config.sessions = {
     secret: process.env.SESSION_SECRET || 'default',
 };
+
+config.user = {
+    defaultRole: 'member',
+    roles: {
+        member: 'member',
+        admin: 'admin',
+    },
+};

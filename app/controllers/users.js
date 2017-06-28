@@ -2,6 +2,7 @@ let Router = require('express').Router;
 let User = require('../models/user');
 let handleError = require('../helpers/handle-error');
 let permission = require('permission');
+let config = require('config');
 
 router = new Router();
 
@@ -9,7 +10,7 @@ router = new Router();
  *    GET: find all users. Filter the results by adding a query-parameter.
  *    POST: creates new user
  */
-router.get('/users', permission(['admin']), function(req, res) {
+router.get('/users', permission([config.user.roles.admin]), function(req, res) {
   User.find().then(
     (users) => {
       return res.status(200).json(users);
@@ -19,7 +20,7 @@ router.get('/users', permission(['admin']), function(req, res) {
     });
 });
 
-router.post('/users', permission(['admin']), function(req, res) {
+router.post('/users', permission([config.user.roles.admin]), function(req, res) {
   const user = new User({
     username: req.body.username,
     password: req.body.password,
@@ -43,7 +44,7 @@ router.post('/users', permission(['admin']), function(req, res) {
  *    GET: find a user with the given id.
  *    DELETE: removes a user with the given id.
  */
-router.get('/users/:id', permission(['admin']), function(req, res) {
+router.get('/users/:id', permission([config.user.roles.admin]), function(req, res) {
   let id = req.params.id;
   User.findById(id)
     .then(
@@ -56,7 +57,7 @@ router.get('/users/:id', permission(['admin']), function(req, res) {
     );
 });
 
-router.delete('/users/:id', permission(['admin']), function(req, res) {
+router.delete('/users/:id', permission([config.user.roles.admin]), function(req, res) {
   User.findByIdAndRemove(req.params.id)
     .then(
       (recipe) => {
