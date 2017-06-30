@@ -28,7 +28,7 @@ let schema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  creationDate: {
+  _creationDate: {
     type: Date,
     default: Date.now,
   },
@@ -85,6 +85,12 @@ class User {
   resetPassword(password) {
     this.password = password;
     return this.save();
+  }
+
+  static getUserByUserName(username) {
+    return this.findOne({'username': username}).exec().then((user) => {
+      return user
+    });
   }
 }
 

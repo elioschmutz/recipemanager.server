@@ -12,9 +12,7 @@ module.exports.setUpDatabase = () => {
     // Create testusers
     users = [];
     _.forIn(config.testusers, (properties, user) => {
-        users.push(builder.user(properties.username,
-                                properties.password,
-                                properties.role));
+        users.push(builder.user(properties));
     });
     return Promise.all(users);
 };
@@ -27,6 +25,9 @@ module.exports.tearDownDatabase = () => {
 };
 
 module.exports.login = (agent, user) => {
+    if (user == null) {
+        user = config.testusers.member;
+    }
     return agent
       .post('/authentication/login')
       .send({

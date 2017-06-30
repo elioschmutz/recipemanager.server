@@ -101,7 +101,7 @@ describe('User', () => {
                   assert.equal(res.status, 401);
                 });
         });
-        it('it should change the password of the current logged-in user', () => {
+        it.only('it should change the password of the current logged-in user', () => {
             let agent = chai.request.agent(app.get());
             return suite.login(agent, config.testusers.member).then((res) => {
                 return agent.put('/api/current_user/change_password')
@@ -110,7 +110,7 @@ describe('User', () => {
                     assert.equal(res.status, 200);
                     return suite.login(agent, {username: config.testusers.member.username,
                                                password: 'secure'}).then((res) => {
-                        return User.findOne({'username': config.testusers.member.username}).exec().then((user) => {
+                        return User.getUserByUserName(config.testusers.member.username).then((user) => {
                             return user.validatePassword('secure');
                         });
                     });
