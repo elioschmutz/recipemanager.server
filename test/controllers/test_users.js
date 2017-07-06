@@ -101,7 +101,7 @@ describe('User', () => {
                   assert.equal(res.status, 401);
                 });
         });
-        it.only('it should change the password of the current logged-in user', () => {
+        it('it should change the password of the current logged-in user', () => {
             let agent = chai.request.agent(app.get());
             return suite.login(agent, config.testusers.member).then((res) => {
                 return agent.put('/api/current_user/change_password')

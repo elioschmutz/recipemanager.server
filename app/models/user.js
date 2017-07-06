@@ -1,9 +1,12 @@
-let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 let config = require('config');
 let validator = require('validator');
+let mongoose = require('mongoose');
+let BaseSchema = require('./base');
+let _ = require('lodash');
 
-let schema = new mongoose.Schema({
+
+let schema = new BaseSchema({
   username: {
     type: String,
     required: true,
@@ -28,27 +31,20 @@ let schema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  _creationDate: {
-    type: Date,
-    default: Date.now,
-  },
   role: {
     type: String,
     default: config.user.defaultRole,
   },
 
 });
-
-schema.set('toJSON', {
-  getters: true,
-  virtuals: false,
+schema.set('toJSON', _.extend({
   transform: (doc, ret) => {
     delete ret.password;
-  },
-});
+  }}, schema.options['toJSON'])
+);
+
 schema.pre('save', function(next) {
   let user = this;
-
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) return next();
 
@@ -79,7 +75,6 @@ class User {
         }
       });
     });
-
   };
 
   resetPassword(password) {
@@ -89,7 +84,7 @@ class User {
 
   static getUserByUserName(username) {
     return this.findOne({'username': username}).exec().then((user) => {
-      return user
+      return user;
     });
   }
 }

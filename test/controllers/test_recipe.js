@@ -33,8 +33,8 @@ describe('Recipe', () => {
       });
       it('it should GET only self created recipes', () => {
         recipes = [];
-        recipes.push(builder.recipe({name: 'Members recipe'}, config.testusers.member.username));
-        recipes.push(builder.recipe({name: 'Admins recipe'}, config.testusers.admin.username));
+        recipes.push(builder.recipe({name: 'Members recipe', _creator: config.testusers.member._id}));
+        recipes.push(builder.recipe({name: 'Admins recipe', _creator: config.testusers.admin._id}));
 
         return Promise.all(recipes).then((values) => {
             let agent = chai.request.agent(app.get());

@@ -10,7 +10,7 @@ router = new Router();
  *    POST: creates new recipe
  */
 router.get('/recipes', permission(), function(req, res) {
-  Recipe.find({'_creator': req.user.id}).populate('_creator').then(
+  Recipe.find({'_creator': req.user.id}).then(
     (recipes) => {
       return res.status(200).json(recipes);
     },
@@ -39,7 +39,7 @@ router.post('/recipes', permission(), function(req, res) {
  *    PUT: updates a recipe with the given recipeid
  *    DELETE: removes a recipe with the given recipeid.
  */
-router.get('/recipes/:id', function(req, res) {
+router.get('/recipes/:id', permission(), function(req, res) {
   let id = req.params.id;
   Recipe.findById(id)
     .then(

@@ -1,7 +1,8 @@
 let mongoose = require('mongoose');
+let ContentBaseSchema = require('./content_base');
 let User = require('./user');
 
-let schema = new mongoose.Schema({
+let schema = new ContentBaseSchema({
   name: {
     type: String,
     required: true,
@@ -24,31 +25,11 @@ let schema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  _creationDate: {
-    type: Date,
-    default: Date.now,
-  },
-  _creator: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-  },
-  _modificationDate: {
-    type: Date,
-    default: Date.now,
-  },
 });
-schema.set('toJSON', {getters: true, virtuals: false});
 
 /**
  */
-class Recipe {
-  setCreatorByUserName(username) {
-    return User.findOne({'username': username}).exec().then((user) => {
-      this._creator = user.id;
-      return this.save();
-    });
-  }
-}
+class Recipe { }
 
 schema.loadClass(Recipe);
 
