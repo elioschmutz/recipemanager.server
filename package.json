@@ -1,5 +1,5 @@
 {
-  "name": "olioehr.recipemanager",
+  "name": "recipemanager.server",
   "version": "1.0.0",
   "description": "REST-API for managing cooking recipes.",
   "main": "app/index.js",
