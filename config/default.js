@@ -10,6 +10,9 @@ config.db = {
 
 config.server = {
   port: 8080,
+  access_control: {
+    allow_origin: '',
+  },
 };
 
 config.authentication = {

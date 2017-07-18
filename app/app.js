@@ -24,6 +24,12 @@ class App {
       // various HTTP headers.
       this.app.use(require('helmet')());
 
+      this.app.use(function(req, res, next) {
+        res.header('Access-Control-Allow-Origin', config.server.access_control.allow_origin);
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        next();
+      });
+
       // parses cookies into req.cookies
       this.app.use(cookieParser());
 
