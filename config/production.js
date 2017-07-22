@@ -7,3 +7,7 @@ config.general = {
 config.db = {
   url: '',
 };
+
+config.sessions = {
+    secure: true,
+};

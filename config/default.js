@@ -21,6 +21,8 @@ config.authentication = {
 
 config.sessions = {
     secret: process.env.SESSION_SECRET || 'default',
+    secure: false,
+    httpOnly: true,
 };
 
 config.user = {

@@ -35,11 +35,17 @@ class App {
 
       // Sessions are stored within the mongodb. The cookie only stores the
       // session-id
+      let expires = new Date();
+      expires.setMonth(expires.getMonth() + 1);
       this.app.use(session({
         secret: config.sessions.secret,
+        secure: config.sessions.secure,
+        httpOnly: config.sessions.httpOnly,
+        expires: expires,
         store: new MongoStore({
           mongooseConnection: db.db.connection}),
         resave: true,
+        name: 'recipeSessionId',
         saveUninitialized: true,
       }));
 
