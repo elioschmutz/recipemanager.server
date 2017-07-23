@@ -1,6 +1,5 @@
 let mongoose = require('mongoose');
 let ContentBaseSchema = require('./content_base');
-let User = require('./user');
 
 let schema = new ContentBaseSchema({
   name: {
