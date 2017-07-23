@@ -19,6 +19,17 @@ let schema = new BaseSchema({
       message: '{VALUE} is not a valid email',
     },
   },
+  emailAddress: {
+    type: String,
+    required: false,
+    validate: {
+      isAsync: true,
+      validator: (value, callback) => {
+        callback(validator.isEmail(value));
+      },
+      message: '{VALUE} is not a valid email',
+    },
+  },
   password: {
     type: String,
     required: true,
@@ -45,6 +56,10 @@ schema.set('toJSON', _.extend({
 
 schema.pre('save', function(next) {
   let user = this;
+
+  // Save email-address from username
+  this.emailAddress = this.username;
+
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) return next();
 

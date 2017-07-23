@@ -48,4 +48,10 @@ describe('User Model', () => {
         return assert.notProperty(user.toJSON(), 'password');
       });
     });
+
+    it('email is set by username', () => {
+      return new User({username: 'james.bond@example.com', password: '1234'}).save().then((user) => {
+        return assert.equal(user.toJSON().emailAddress, 'james.bond@example.com');
+      });
+    });
 });
