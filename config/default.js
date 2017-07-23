@@ -1,3 +1,4 @@
+require('dotenv').config();
 let config = exports;
 
 config.general = {
@@ -5,7 +6,7 @@ config.general = {
 };
 
 config.db = {
-  url: '',
+  url: process.env.MONGODB_CONNECTION_STRING,
 };
 
 config.server = {
