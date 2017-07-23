@@ -25,32 +25,40 @@ class App {
       this.app.use(require('helmet')());
 
       this.app.use(function(req, res, next) {
+       // Request methods you wish to allow
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+        // Request headers you wish to allow
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, X-AUTHENTICATION, X-IP, Content-Type, Origin, Accept, Cookie');
+
+        // Set to true if you need the website to include cookies in the requests sent
+        // to the API (e.g. in case you use sessions)
+        res.setHeader('Access-Control-Allow-Credentials', true);
+
+        // Website you wish to allow to connect
         res.header('Access-Control-Allow-Origin', config.server.access_control.allow_origin);
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
+
         next();
       });
-
-      // parses cookies into req.cookies
-      this.app.use(cookieParser());
 
       // Sessions are stored within the mongodb. The cookie only stores the
       // session-id
       let expires = new Date();
       expires.setMonth(expires.getMonth() + 1);
       this.app.use(session({
+        name: '__rmac',
         secret: config.sessions.secret,
-        secure: config.sessions.secure,
-        httpOnly: config.sessions.httpOnly,
-        expires: expires,
+        resave: false,
         store: new MongoStore({
           mongooseConnection: db.db.connection}),
-        resave: true,
-        name: 'recipeSessionId',
         saveUninitialized: true,
+        cookie: {
+          path: '/',
+          httpOnly: config.sessions.httpOnly,
+          maxAge: 1000 * 60 * 60 * 24 * 30,
+          secure: config.sessions.secure,
+        },
       }));
-
-      // // Messages are written to the flash and cleared after being displayed to the user.
-      // this.app.use(flash());
 
       // parse application/x-www-form-urlencoded
       this.app.use(bodyParser.urlencoded({extended: false}));

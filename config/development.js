@@ -6,6 +6,6 @@ config.db = {
 
 config.server = {
   access_control: {
-    allow_origin: '*',
+    allow_origin: 'http://localhost:4200',
   },
 };
