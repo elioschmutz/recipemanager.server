@@ -44,6 +44,31 @@ router.post('/users', permission([config.user.roles.admin]), function(req, res) 
  *    GET: find a user with the given id.
  *    DELETE: removes a user with the given id.
  */
+router.post('/users/register', function(req, res) {
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName});
+
+  user.save()
+    .then((user) => {
+        res.status(201).json(user);
+      }, (reason) => {
+        if (reason.code == 11000) {
+          handleError(res, reason, 'The user with this username already exists.', 409);
+        } else {
+          handleError(res, reason, 'Something went wrong while creating the user.', 400);
+        }
+      }
+    );
+});
+
+
+/*  "/:id"
+ *    GET: find a user with the given id.
+ *    DELETE: removes a user with the given id.
+ */
 router.get('/users/:id', permission([config.user.roles.admin]), function(req, res) {
   let id = req.params.id;
   User.findById(id)

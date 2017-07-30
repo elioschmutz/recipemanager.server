@@ -91,6 +91,17 @@ describe('User', () => {
             });
         });
     });
+    describe('/POST api/users/register', () => {
+        it.only('it should create a new user', () => {
+            let agent = chai.request.agent(app.get());
+            return agent
+            .post('/api/users/register')
+            .send({username: 'chuck.norris@example.com', password: '1234'})
+            .then(function(res) {
+                assert.equal(res.body.username, 'chuck.norris@example.com');
+            });
+        });
+    });
     describe('/PUT api/current_user/change_password', () => {
         it('anonymous has no access', () => {
             return chai.request(app.get())
